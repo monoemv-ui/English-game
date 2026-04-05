@@ -1,0 +1,15 @@
+{
+  "name": "Kids Word Search",
+  "short_name": "WordSearch",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#F0F9FF",
+  "theme_color": "#FFCF00",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3893/3893012.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

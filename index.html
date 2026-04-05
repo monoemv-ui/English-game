@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kids Word Search Adventure</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#FFCF00">
+</head>
+<body>
+    <div id="app-container">
+        <header>
+            <h1>🔠 Word Search!</h1>
+            <div class="controls">
+                <select id="theme-select"></select>
+                <select id="difficulty-select">
+                    <option value="normal">Normal (10 words)</option>
+                    <option value="advanced">Advanced (20 words)</option>
+                </select>
+                <button id="new-game-btn">New Game 🚀</button>
+            </div>
+        </header>
+
+        <main>
+            <div id="word-search-container"></div>
+            <div id="word-list-container">
+                <h3>Find these words:</h3>
+                <ul id="word-list"></ul>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
+    </script>
+</body>
+</html>

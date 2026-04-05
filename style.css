@@ -1,0 +1,102 @@
+:root {
+    --primary: #FFCF00;
+    --secondary: #4CAF50;
+    --accent: #FF5722;
+    --bg: #F0F9FF;
+    --text: #333;
+}
+
+body {
+    font-family: 'Comic Sans MS', 'Chalkboard SE', cursive;
+    background-color: var(--bg);
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    color: var(--text);
+}
+
+#app-container {
+    max-width: 800px;
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 { color: var(--accent); text-shadow: 2px 2px #fff; }
+
+.controls {
+    background: white;
+    padding: 15px;
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+select, button {
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid var(--primary);
+    font-size: 1rem;
+}
+
+button {
+    background: var(--secondary);
+    color: white;
+    cursor: pointer;
+    border: none;
+    transition: transform 0.2s;
+}
+
+button:hover { transform: scale(1.05); }
+
+#word-search-container {
+    display: grid;
+    margin: 0 auto;
+    gap: 5px;
+    background: white;
+    padding: 10px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    user-select: none;
+    touch-action: none;
+}
+
+.cell {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eee;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+.cell.selected { background: var(--primary); color: white; }
+.cell.found { background: var(--secondary); color: white; }
+
+#word-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    list-style: none;
+    padding: 0;
+    gap: 10px;
+}
+
+#word-list li {
+    background: white;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+#word-list li.found {
+    text-decoration: line-through;
+    opacity: 0.5;
+    background: #d4edda;
+}
