@@ -2,7 +2,6 @@
     --primary: #FFCF00;
     --secondary: #4CAF50;
     --bg: #F0F9FF;
-    --cell-size: clamp(30px, 8vw, 45px);
 }
 
 body {
@@ -17,7 +16,7 @@ body {
 #app-container {
     width: 100%;
     max-width: 500px;
-    padding: 15px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
@@ -29,23 +28,24 @@ body {
     font-weight: bold;
     padding: 10px 15px;
     background: white;
-    border-radius: 25px;
+    border-radius: 20px;
     border: 2px solid var(--primary);
     margin-bottom: 10px;
+    font-size: 0.9rem;
 }
 
 .controls {
     display: flex;
-    gap: 8px;
-    margin-bottom: 15px;
+    gap: 5px;
+    margin-bottom: 10px;
 }
 
 select, button {
-    padding: 10px;
-    border-radius: 10px;
+    padding: 8px;
+    border-radius: 8px;
     border: 1px solid #ccc;
     flex: 1;
-    font-size: 14px;
+    font-size: 0.9rem;
 }
 
 button {
@@ -53,17 +53,16 @@ button {
     color: white;
     border: none;
     font-weight: bold;
+    cursor: pointer;
 }
 
-/* El Tablero */
 #word-search-container {
     display: grid;
-    gap: 2px;
-    background: #ddd;
-    padding: 5px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    /* touch-action: none es SOLO para el contenedor del juego */
+    gap: 1px;
+    background: #ccc;
+    padding: 3px;
+    border-radius: 8px;
+    margin-bottom: 10px;
     touch-action: none; 
     user-select: none;
     -webkit-user-select: none;
@@ -77,37 +76,36 @@ button {
     align-items: center;
     justify-content: center;
     font-weight: bold;
-    font-size: 1.2rem;
-    border-radius: 4px;
+    font-size: clamp(10px, 3.5vw, 18px); /* Letra adaptable para grillas de 20x20 */
+    border-radius: 2px;
     -webkit-tap-highlight-color: transparent;
 }
 
 .cell.selected { background: var(--primary); }
 .cell.found { background: var(--secondary); color: white; }
 
-/* Lista de Palabras - Ahora visible y con scroll */
 #word-list-container {
     background: white;
-    padding: 15px;
-    border-radius: 15px;
+    padding: 10px;
+    border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    margin-top: 10px;
 }
 
 #word-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 6px;
     padding: 0;
     list-style: none;
     justify-content: center;
+    margin: 0;
 }
 
 #word-list li {
     background: #f8f8f8;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 0.9rem;
+    padding: 4px 8px;
+    border-radius: 15px;
+    font-size: 0.75rem;
     border: 1px solid #eee;
 }
 
@@ -117,11 +115,10 @@ button {
     opacity: 0.6;
 }
 
-/* Modales */
 .modal {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.8);
+    background: rgba(0,0,0,0.85);
     display: none;
     align-items: center;
     justify-content: center;
@@ -133,5 +130,16 @@ button {
     padding: 25px;
     border-radius: 20px;
     text-align: center;
-    width: 80%;
+    width: 85%;
+    max-width: 350px;
+}
+
+input {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    text-align: center;
 }
