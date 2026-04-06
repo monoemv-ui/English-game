@@ -121,10 +121,18 @@ function renderWords() {
     });
 }
 
+function addToSelection(target) {
+    if (!selection.includes(target)) {
+        selection.push(target);
+        target.classList.add('selected');
+    }
+}
+
 function startSelection(e) {
+    e.preventDefault();
     isDragging = true;
-    selection = [e.target];
-    e.target.classList.add('selected');
+    selection = [];
+    addToSelection(e.target);
 }
 
 function updateSelection(e) {
@@ -152,6 +160,7 @@ function endSelection() {
     }
     selection = [];
 }
+
 
 newGameBtn.addEventListener('click', initGame);
 document.addEventListener('pointerup', () => isDragging = false);
