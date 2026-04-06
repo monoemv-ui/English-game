@@ -1,52 +1,69 @@
 :root {
     --primary: #FFCF00;
     --secondary: #4CAF50;
-    --accent: #FF5722;
     --bg: #F0F9FF;
+    --cell-size: clamp(30px, 8vw, 45px);
 }
 
 body {
     font-family: 'Comic Sans MS', cursive;
-    background-color: var(--bg);
+    background: var(--bg);
     margin: 0;
-    overflow: hidden; /* Evitar scroll accidental durante el juego */
-    position: fixed; /* Fix para iOS */
-    width: 100%; height: 100%;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+#app-container {
+    width: 100%;
+    max-width: 500px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
 }
 
 #user-profile {
     display: flex;
     justify-content: space-between;
-    background: #fff;
-    padding: 8px 15px;
-    border-radius: 50px;
-    margin-bottom: 10px;
-    border: 2px solid var(--primary);
     font-weight: bold;
-    font-size: 0.9rem;
+    padding: 10px 15px;
+    background: white;
+    border-radius: 25px;
+    border: 2px solid var(--primary);
+    margin-bottom: 10px;
 }
 
-#app-container {
-    max-width: 500px;
-    margin: 0 auto;
-    padding: 10px;
-    height: 100vh;
+.controls {
     display: flex;
-    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 15px;
 }
 
-header { flex-shrink: 0; }
-main { flex-grow: 1; display: flex; flex-direction: column; overflow-y: auto; }
+select, button {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    flex: 1;
+    font-size: 14px;
+}
 
+button {
+    background: var(--secondary);
+    color: white;
+    border: none;
+    font-weight: bold;
+}
+
+/* El Tablero */
 #word-search-container {
     display: grid;
     gap: 2px;
-    background: #ccc;
-    padding: 4px;
+    background: #ddd;
+    padding: 5px;
     border-radius: 10px;
-    margin-bottom: 15px;
-    
-    /* CRUCIAL PARA MÓVILES: Desactivar gestos nativos */
+    margin-bottom: 20px;
+    /* touch-action: none es SOLO para el contenedor del juego */
     touch-action: none; 
     user-select: none;
     -webkit-user-select: none;
@@ -54,50 +71,61 @@ main { flex-grow: 1; display: flex; flex-direction: column; overflow-y: auto; }
 
 .cell {
     background: white;
+    width: 100%;
     aspect-ratio: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: bold;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     border-radius: 4px;
-    color: #333;
-    
-    /* Evitar resaltado azul al tocar */
-    -webkit-tap-highlight-color: transparent; 
+    -webkit-tap-highlight-color: transparent;
 }
 
-.cell.selected { background: var(--primary); color: #000; }
-.cell.found { background: var(--secondary); color: white; transition: background 0.2s; }
+.cell.selected { background: var(--primary); }
+.cell.found { background: var(--secondary); color: white; }
 
-#word-list-container { flex-shrink: 0; margin-top: auto; padding-bottom: 10px; }
+/* Lista de Palabras - Ahora visible y con scroll */
+#word-list-container {
+    background: white;
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    margin-top: 10px;
+}
 
 #word-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: 8px;
     padding: 0;
+    list-style: none;
     justify-content: center;
-    margin: 0;
 }
 
 #word-list li {
-    list-style: none;
-    padding: 4px 10px;
-    background: #fff;
+    background: #f8f8f8;
+    padding: 6px 12px;
     border-radius: 20px;
-    border: 1px solid #ddd;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
+    border: 1px solid #eee;
 }
 
-#word-list li.found { background: #d4edda; text-decoration: line-through; opacity: 0.5; border-color: #c3e6cb; }
+#word-list li.found {
+    text-decoration: line-through;
+    background: #d4edda;
+    opacity: 0.6;
+}
 
-/* Modal */
+/* Modales */
 .modal {
-    position: fixed; top:0; left:0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.85);
-    display: none; align-items: center; justify-content: center;
-    z-index: 1000;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
 }
 
 .modal-content {
@@ -105,13 +133,5 @@ main { flex-grow: 1; display: flex; flex-direction: column; overflow-y: auto; }
     padding: 25px;
     border-radius: 20px;
     text-align: center;
-    width: 80%; max-width: 300px;
-}
-
-input { padding: 12px; width: 90%; margin: 15px 0; border-radius: 10px; border: 1px solid #ccc; font-size: 1rem; }
-#save-name-btn { background: var(--secondary); color: white; border: none; padding: 10px 20px; border-radius: 10px; font-size: 1rem; cursor: pointer; }
-
-@media (max-width: 380px) {
-    .cell { font-size: 0.9rem; }
-    h1 { font-size: 1.3rem; margin: 5px 0; }
+    width: 80%;
 }
