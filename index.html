@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sopa de Letras Pro</title>
+    <title>Word Search Pro</title>
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#FFCF00">
@@ -13,24 +13,24 @@
         <header>
             <div id="user-profile">
                 <span id="user-avatar">👤</span>
-                <span id="user-name">Jugador</span>
-                <span id="user-score">Puntos: 0</span>
+                <span id="user-name">Player</span>
+                <span id="user-score">Points: 0</span>
             </div>
             <h1>🔠 Word Search!</h1>
             <div class="controls">
                 <select id="theme-select"></select>
                 <select id="difficulty-select">
                     <option value="normal">Normal</option>
-                    <option value="advanced">Avanzado</option>
+                    <option value="advanced">Advanced</option>
                 </select>
-                <button id="new-game-btn">¡Jugar! 🚀</button>
+                <button id="new-game-btn">Play! 🚀</button>
             </div>
         </header>
 
         <main>
             <div id="word-search-container"></div>
             <div id="word-list-container">
-                <h3>Busca estas palabras:</h3>
+                <h3>Find these words:</h3>
                 <ul id="word-list"></ul>
             </div>
         </main>
@@ -38,17 +38,21 @@
 
     <div id="name-modal" class="modal">
         <div class="modal-content">
-            <h2>¡Bienvenido!</h2>
-            <p>Escribe tu nombre para empezar:</p>
-            <input type="text" id="player-name-input" placeholder="Tu nombre...">
-            <button id="save-name-btn">Empezar</button>
+            <h2>Welcome!</h2>
+            <p>Enter your name to start:</p>
+            <input type="text" id="player-name-input" placeholder="Your name...">
+            <button id="save-name-btn">Start Game</button>
         </div>
     </div>
 
     <script src="app.js"></script>
     <script>
+        // Registro de Service Worker estándar
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js');
+            navigator.serviceWorker.register('sw.js').then(reg => {
+                // Comprobar actualizaciones en cada carga
+                reg.update();
+            });
         }
     </script>
 </body>
