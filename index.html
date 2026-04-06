@@ -6,31 +6,27 @@
     <title>Word Search Pro</title>
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#FFCF00">
 </head>
 <body>
     <div id="app-container">
         <header>
             <div id="user-profile">
-                <span id="user-avatar">👤</span>
                 <span id="user-name">Player</span>
-                <span id="user-score">Points: 0</span>
+                <span id="user-score">Score: 0</span>
             </div>
-            <h1>🔠 Word Search!</h1>
             <div class="controls">
                 <select id="theme-select"></select>
                 <select id="difficulty-select">
                     <option value="normal">Normal</option>
                     <option value="advanced">Advanced</option>
                 </select>
-                <button id="new-game-btn">Play! 🚀</button>
+                <button id="new-game-btn">New Game 🚀</button>
             </div>
         </header>
 
         <main>
             <div id="word-search-container"></div>
             <div id="word-list-container">
-                <h3>Find these words:</h3>
                 <ul id="word-list"></ul>
             </div>
         </main>
@@ -38,22 +34,12 @@
 
     <div id="name-modal" class="modal">
         <div class="modal-content">
-            <h2>Welcome!</h2>
-            <p>Enter your name to start:</p>
-            <input type="text" id="player-name-input" placeholder="Your name...">
-            <button id="save-name-btn">Start Game</button>
+            <h3>Welcome!</h3>
+            <input type="text" id="player-name-input" placeholder="Your Name">
+            <button id="save-name-btn" style="margin-top:10px; width:100%">Start Adventure</button>
         </div>
     </div>
 
     <script src="app.js"></script>
-    <script>
-        // Registro de Service Worker estándar
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js').then(reg => {
-                // Comprobar actualizaciones en cada carga
-                reg.update();
-            });
-        }
-    </script>
 </body>
 </html>
