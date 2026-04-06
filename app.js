@@ -57,82 +57,101 @@ window.onload = () => {
         updateScore();
         setupThemes();
     }
+    
+let selectedWords = [], grid = [], gridSize = 14;
+let isDragging = false, selection = [], score = 0, timeElapsed = 0, timerInterval = null;
+
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+function playNote(f, d, type='sine') {
+    if(audioCtx.state === 'suspended') audioCtx.resume();
+    const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+    o.type = type; o.connect(g); g.connect(audioCtx.destination);
+    o.frequency.value = f; g.gain.setValueAtTime(0.1, audioCtx.currentTime);
+    o.start(); o.stop(audioCtx.currentTime + d);
+}
+
+window.onload = () => {
+    const savedName = localStorage.getItem('ws_user') || "Noah";
+    document.getElementById('player-name-input').value = savedName;
+    document.getElementById('user-name').innerText = savedName;
+    
+    // Cargar score total acumulado
+    score = parseInt(localStorage.getItem('ws_total_score')) || 0;
+    document.getElementById('user-score').innerText = `Score: ${score}`;
+
+    const select = document.getElementById('theme-select');
+    Object.keys(themes).forEach(t => select.add(new Option(t, t)));
+    
+    document.getElementById('name-modal').style.display = 'flex';
 };
 
+// --- Lógica de Botones ---
 document.getElementById('save-name-btn').onclick = () => {
-    const name = document.getElementById('player-name-input').value.trim() || "Player";
+    const name = document.getElementById('player-name-input').value.trim() || "Noah";
     localStorage.setItem('ws_user', name);
     document.getElementById('user-name').innerText = name;
-    document.getElementById('name-modal').style.display = 'none';
-    sounds.click();
-    setupThemes();
+    initGame();
 };
 
-function setupThemes() {
-    const select = document.getElementById('theme-select');
-    if(select.options.length === 0) {
-        Object.keys(themes).forEach(t => select.add(new Option(t, t)));
-    }
-    initGame();
-}
-
-function updateScore() {
-    document.getElementById('user-score').innerText = `Score: ${score}`;
-    localStorage.setItem('ws_score', score);
-}
-
-function startTimer() {
+document.getElementById('exit-btn').onclick = () => {
     clearInterval(timerInterval);
-    timeElapsed = 0;
-    document.getElementById('user-time').innerText = `⏱️ 0s`;
-    timerInterval = setInterval(() => {
-        timeElapsed++;
-        document.getElementById('user-time').innerText = `⏱️ ${timeElapsed}s`;
-    }, 1000);
-}
+    document.getElementById('stat-player').innerText = localStorage.getItem('ws_user');
+    document.getElementById('stat-score').innerText = score;
+    document.getElementById('stats-modal').style.display = 'flex';
+};
 
+document.getElementById('close-stats-btn').onclick = () => {
+    document.getElementById('stats-modal').style.display = 'none';
+    document.getElementById('name-modal').style.display = 'flex';
+};
+
+document.getElementById('settings-btn').onclick = () => {
+    document.getElementById('name-modal').style.display = 'flex';
+};
+
+// --- Motor del Juego ---
 function initGame() {
-    document.getElementById('win-modal').style.display = 'none';
-    const theme = themes[document.getElementById('theme-select').value];
+    document.getElementById('name-modal').style.display = 'none';
+    const themeKey = document.getElementById('theme-select').value;
     const diff = document.getElementById('difficulty-select').value;
     
+    gridSize = diff === 'normal' ? 12 : 16;
     const wordCount = diff === 'normal' ? 10 : 20;
-    gridSize = diff === 'normal' ? 14 : 20; // 20x20 es necesario para 20 palabras cruzadas
     
-    selectedWords = [...theme].sort(() => 0.5 - Math.random()).slice(0, wordCount);
+    selectedWords = [...themes[themeKey]].sort(() => 0.5 - Math.random()).slice(0, wordCount);
     grid = Array(gridSize).fill().map(() => Array(gridSize).fill(''));
     
     selectedWords.forEach(w => placeWord(w));
-    
-    for(let r=0; r<gridSize; r++) 
-        for(let c=0; c<gridSize; c++) 
-            if(!grid[r][c]) grid[r][c] = String.fromCharCode(65+Math.floor(Math.random()*26));
-    
+    fillGrid();
     render();
     startTimer();
 }
 
 function placeWord(word) {
-    let placed = false;
-    let attempts = 0;
-    while (!placed && attempts < 200) {
-        const dir = [[0,1],[1,0],[1,1]][Math.floor(Math.random()*3)]; // Horizontal, Vertical, Diagonal
-        const r = Math.floor(Math.random()*gridSize);
-        const c = Math.floor(Math.random()*gridSize);
-        
-        // Comprobar si cabe en la dirección
-        if(r + (word.length * dir[0]) <= gridSize && c + (word.length * dir[1]) <= gridSize) {
-            let safe = true;
-            for(let i=0; i<word.length; i++) {
-                if(grid[r+i*dir[0]][c+i*dir[1]] !== '' && grid[r+i*dir[0]][c+i*dir[1]] !== word[i]) safe = false;
-            }
-            if (safe) {
-                for(let i=0; i<word.length; i++) grid[r+i*dir[0]][c+i*dir[1]] = word[i];
-                placed = true;
-            }
+    let placed = false, attempts = 0;
+    while (!placed && attempts < 150) {
+        const dir = [[0,1],[1,0],[1,1],[1,-1]][Math.floor(Math.random()*4)];
+        const r = Math.floor(Math.random()*gridSize), c = Math.floor(Math.random()*gridSize);
+        if (canPlace(word, r, c, dir)) {
+            for (let i=0; i<word.length; i++) grid[r+i*dir[0]][c+i*dir[1]] = word[i];
+            placed = true;
         }
         attempts++;
     }
+}
+
+function canPlace(word, r, c, dir) {
+    for (let i=0; i<word.length; i++) {
+        const nr = r+i*dir[0], nc = c+i*dir[1];
+        if (nr<0 || nr>=gridSize || nc<0 || nc>=gridSize || (grid[nr][nc] !== '' && grid[nr][nc] !== word[i])) return false;
+    }
+    return true;
+}
+
+function fillGrid() {
+    for(let r=0; r<gridSize; r++)
+        for(let c=0; c<gridSize; c++)
+            if(!grid[r][c]) grid[r][c] = String.fromCharCode(65+Math.floor(Math.random()*26));
 }
 
 function render() {
@@ -143,14 +162,7 @@ function render() {
     grid.forEach((row, r) => row.forEach((char, c) => {
         const div = document.createElement('div');
         div.className = 'cell'; div.innerText = char;
-        div.onpointerdown = (e) => {
-            e.preventDefault();
-            isDragging = true; selection = [div];
-            div.classList.add('selected');
-            sounds.click();
-            window.addEventListener('pointermove', handleMove);
-            window.addEventListener('pointerup', handleUp);
-        };
+        div.onpointerdown = startSelection;
         container.appendChild(div);
     }));
 
@@ -162,51 +174,66 @@ function render() {
     });
 }
 
-function handleMove(e) {
-    if(!isDragging) return;
+// --- Selección Táctil Corregida ---
+function startSelection(e) {
+    e.preventDefault();
+    isDragging = true;
+    selection = [e.target];
+    e.target.classList.add('selected');
+    playNote(600, 0.05);
+    window.addEventListener('pointermove', moveSelection);
+    window.addEventListener('pointerup', endSelection);
+}
+
+function moveSelection(e) {
+    if (!isDragging) return;
     const el = document.elementFromPoint(e.clientX, e.clientY);
-    if(el && el.classList.contains('cell') && !selection.includes(el)) {
-        selection.push(el); el.classList.add('selected');
-        sounds.click();
+    if (el && el.classList.contains('cell') && !selection.includes(el)) {
+        selection.push(el);
+        el.classList.add('selected');
+        playNote(600, 0.05);
     }
 }
 
-function handleUp() {
+function endSelection() {
     isDragging = false;
-    window.removeEventListener('pointermove', handleMove);
-    window.removeEventListener('pointerup', handleUp);
+    window.removeEventListener('pointermove', moveSelection);
+    window.removeEventListener('pointerup', endSelection);
     
     const word = selection.map(s => s.innerText).join('');
     const rev = word.split('').reverse().join('');
     const found = selectedWords.find(w => w === word || w === rev);
 
-    if(found && !document.getElementById(`w-${found}`).classList.contains('found')) {
+    if (found && !document.getElementById(`w-${found}`).classList.contains('found')) {
         selection.forEach(s => { s.classList.remove('selected'); s.classList.add('found'); });
         document.getElementById(`w-${found}`).classList.add('found');
-        score += 10; 
-        updateScore(); 
-        sounds.success();
+        score += 10;
+        localStorage.setItem('ws_total_score', score);
+        document.getElementById('user-score').innerText = `Score: ${score}`;
+        playNote(500, 0.1);
         checkWin();
     } else {
         selection.forEach(s => s.classList.remove('selected'));
-        if(selection.length > 1) sounds.error();
     }
     selection = [];
 }
 
+function startTimer() {
+    timeElapsed = 0;
+    clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+        timeElapsed++;
+        document.getElementById('user-time').innerText = `⏱️ ${timeElapsed}s`;
+    }, 1000);
+}
+
 function checkWin() {
-    const foundCount = document.querySelectorAll('#word-list li.found').length;
-    if (foundCount === selectedWords.length) {
+    if (document.querySelectorAll('#word-list li.found').length === selectedWords.length) {
         clearInterval(timerInterval);
-        score += 50; // Bonus por completar
-        updateScore();
         setTimeout(() => {
-            sounds.fanfare();
-            document.getElementById('win-stats').innerText = `Total Score: ${score} | Time: ${timeElapsed}s`;
-            document.getElementById('win-modal').style.display = 'flex';
+            playNote(392, 0.3, 'square');
+            alert(`🎉 Amazing! Score: ${score} | Time: ${timeElapsed}s`);
+            document.getElementById('name-modal').style.display = 'flex';
         }, 500);
     }
 }
-
-document.getElementById('new-game-btn').onclick = initGame;
-document.getElementById('next-level-btn').onclick = initGame;
