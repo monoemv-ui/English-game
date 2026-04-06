@@ -1,145 +1,29 @@
-:root {
-    --primary: #FFCF00;
-    --secondary: #4CAF50;
-    --bg: #F0F9FF;
+:root { --primary: #FFCF00; --secondary: #4CAF50; --bg: #F0F9FF; }
+body { font-family: 'Comic Sans MS', cursive; background: var(--bg); margin: 0; display: flex; justify-content: center; }
+
+#app-container { width: 100%; max-width: 500px; padding: 10px; }
+
+header { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+.header-buttons { display: flex; gap: 5px; }
+
+#user-profile { 
+    display: flex; justify-content: space-between; padding: 10px; background: white; 
+    border-radius: 15px; border: 2px solid var(--primary); font-size: 0.85rem; font-weight: bold;
 }
 
-body {
-    font-family: 'Comic Sans MS', cursive;
-    background: var(--bg);
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    min-height: 100vh;
+#word-search-container { 
+    display: grid; gap: 1px; background: #ccc; padding: 2px; border-radius: 8px; 
+    touch-action: none; user-select: none;
 }
 
-#app-container {
-    width: 100%;
-    max-width: 500px;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
-}
-
-#user-profile {
-    display: flex;
-    justify-content: space-between;
-    font-weight: bold;
-    padding: 10px 15px;
-    background: white;
-    border-radius: 20px;
-    border: 2px solid var(--primary);
-    margin-bottom: 10px;
-    font-size: 0.9rem;
-}
-
-.controls {
-    display: flex;
-    gap: 5px;
-    margin-bottom: 10px;
-}
-
-select, button {
-    padding: 8px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    flex: 1;
-    font-size: 0.9rem;
-}
-
-button {
-    background: var(--secondary);
-    color: white;
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-#word-search-container {
-    display: grid;
-    gap: 1px;
-    background: #ccc;
-    padding: 3px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    touch-action: none; 
-    user-select: none;
-    -webkit-user-select: none;
-}
-
-.cell {
-    background: white;
-    width: 100%;
-    aspect-ratio: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    font-size: clamp(10px, 3.5vw, 18px); /* Letra adaptable para grillas de 20x20 */
-    border-radius: 2px;
-    -webkit-tap-highlight-color: transparent;
-}
-
+.cell { background: white; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: clamp(10px, 4vw, 18px); }
 .cell.selected { background: var(--primary); }
 .cell.found { background: var(--secondary); color: white; }
 
-#word-list-container {
-    background: white;
-    padding: 10px;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-}
+#word-list { display: flex; flex-wrap: wrap; gap: 5px; list-style: none; padding: 0; justify-content: center; }
+#word-list li { background: white; padding: 5px 10px; border-radius: 15px; font-size: 0.75rem; border: 1px solid #ddd; }
+#word-list li.found { text-decoration: line-through; opacity: 0.5; background: #d4edda; }
 
-#word-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    padding: 0;
-    list-style: none;
-    justify-content: center;
-    margin: 0;
-}
-
-#word-list li {
-    background: #f8f8f8;
-    padding: 4px 8px;
-    border-radius: 15px;
-    font-size: 0.75rem;
-    border: 1px solid #eee;
-}
-
-#word-list li.found {
-    text-decoration: line-through;
-    background: #d4edda;
-    opacity: 0.6;
-}
-
-.modal {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.85);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 100;
-}
-
-.modal-content {
-    background: white;
-    padding: 25px;
-    border-radius: 20px;
-    text-align: center;
-    width: 85%;
-    max-width: 350px;
-}
-
-input {
-    width: 90%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1rem;
-    text-align: center;
-}
+.modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 100; }
+.modal-content { background: white; padding: 20px; border-radius: 20px; width: 85%; max-width: 350px; text-align: center; }
+.menu-group { margin-top: 10px; text-align: left; }
