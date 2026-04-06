@@ -1,5 +1,5 @@
 const BASE_CACHE = 'wordsearch-pwa';
-const BUILD_VERSION = '1.3.1'; 
+const BUILD_VERSION = '1.4.0'; 
 let CACHE_NAME = `${BASE_CACHE}-${BUILD_VERSION}`;
 
 const ASSETS = ['./', './index.html', './style.css', './app.js', './manifest.json'];
