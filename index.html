@@ -13,14 +13,15 @@
             <div id="user-profile">
                 <span id="user-name">Player</span>
                 <span id="user-score">Score: 0</span>
+                <span id="user-time">⏱️ 0s</span>
             </div>
             <div class="controls">
                 <select id="theme-select"></select>
                 <select id="difficulty-select">
-                    <option value="normal">Normal</option>
-                    <option value="advanced">Advanced</option>
+                    <option value="normal">Normal (10)</option>
+                    <option value="advanced">Advanced (20)</option>
                 </select>
-                <button id="new-game-btn">New Game 🚀</button>
+                <button id="new-game-btn">New Game</button>
             </div>
         </header>
 
@@ -34,9 +35,18 @@
 
     <div id="name-modal" class="modal">
         <div class="modal-content">
-            <h3>Welcome!</h3>
-            <input type="text" id="player-name-input" placeholder="Your Name">
-            <button id="save-name-btn" style="margin-top:10px; width:100%">Start Adventure</button>
+            <h2>Welcome to Word Search</h2>
+            <p>Enter your profile name:</p>
+            <input type="text" id="player-name-input" value="Noah">
+            <button id="save-name-btn" style="margin-top:10px; width:100%">Create Profile & Play</button>
+        </div>
+    </div>
+
+    <div id="win-modal" class="modal">
+        <div class="modal-content">
+            <h2>🎉 Level Cleared! 🎉</h2>
+            <p id="win-stats">Score: 0 | Time: 0s</p>
+            <button id="next-level-btn" style="margin-top:10px; width:100%">Next Level</button>
         </div>
     </div>
 
