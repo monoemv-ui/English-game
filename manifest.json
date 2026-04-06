@@ -1,13 +1,19 @@
 {
-  "name": "Kids Word Search",
+  "name": "Word Search Kids",
   "short_name": "WordSearch",
-  "start_url": "index.html",
+  "start_url": ".",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#F0F9FF",
   "theme_color": "#FFCF00",
   "icons": [
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/3893/3893012.png",
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
