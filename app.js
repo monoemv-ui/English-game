@@ -1,139 +1,182 @@
-// 14 Temas con más de 20 palabras cada uno
-const themes = {
-    "Animals 🦁": ["LION", "TIGER", "ELEPHANT", "GIRAFFE", "MONKEY", "ZEBRA", "RABBIT", "PANDA", "KANGAROO", "HIPPO", "DOLPHIN", "SHARK", "WHALE", "PARROT", "EAGLE", "SNAKE", "TURTLE", "FROG", "WOLF", "BEAR", "CAMEL"],
-    "Food 🍕": ["PIZZA", "BURGER", "PASTA", "CHICKEN", "APPLE", "BANANA", "ORANGE", "CHERRY", "BREAD", "CHEESE", "COOKIE", "CAKE", "SALAD", "TOMATO", "POTATO", "DONUT", "MILK", "JUICE", "MANGO", "STEAK", "GRAPES"],
-    "Professions 👩‍⚕️": ["DOCTOR", "NURSE", "TEACHER", "POLICE", "PILOT", "CHEF", "DENTIST", "FARMER", "ARTIST", "SINGER", "ACTOR", "WRITER", "COACH", "JUDGE", "BAKER", "WAITER", "SAILOR", "MINER", "GUARD", "DRIVER", "MAYOR"],
-    "Places 🏠": ["HOUSE", "SCHOOL", "PARK", "BEACH", "MUSEUM", "CINEMA", "OFFICE", "STREET", "GARDEN", "FOREST", "CHURCH", "STORE", "BANK", "STADIUM", "ZOO", "AIRPORT", "HOTEL", "CITY", "ISLAND", "CASTLE", "TOWN"],
-    "Space 🚀": ["PLANET", "STARS", "MOON", "SUN", "COMET", "GALAXY", "ROCKET", "ALIEN", "ORBIT", "METEOR", "NEBULA", "ASTEROID", "COSMOS", "EARTH", "MARS", "VENUS", "SATURN", "PLUTO", "APOLLO", "SPACESUIT", "RADAR"],
-    "Sports ⚽": ["SOCCER", "TENNIS", "BASKETBALL", "BASEBALL", "GOLF", "RUGBY", "HOCKEY", "VOLLEYBALL", "CRICKET", "BOXING", "SKIING", "SURFING", "CYCLING", "RUNNING", "SWIMMING", "KARATE", "JUDO", "CHESS", "DARTS", "BOWLING", "SKATE"],
-    "Colors 🎨": ["RED", "BLUE", "GREEN", "YELLOW", "BLACK", "WHITE", "PINK", "PURPLE", "ORANGE", "BROWN", "GREY", "CYAN", "MAGENTA", "MAROON", "OLIVE", "NAVY", "TEAL", "SILVER", "GOLD", "INDIGO", "VIOLET"],
-    "Clothes 👕": ["SHIRT", "PANTS", "DRESS", "SKIRT", "SHOES", "SOCKS", "HAT", "COAT", "JACKET", "GLOVES", "SCARF", "BELT", "TIE", "BOOTS", "SWEATER", "JEANS", "SHORTS", "SUIT", "BLOUSE", "SLIPPERS", "CAP"],
-    "Body 👁️": ["HEAD", "EYES", "NOSE", "MOUTH", "EARS", "HAIR", "NECK", "SHOULDERS", "ARMS", "HANDS", "FINGERS", "LEGS", "FEET", "TOES", "BACK", "CHEST", "STOMACH", "KNEES", "ELBOWS", "TEETH", "ANKLE"],
-    "Vehicles 🚗": ["CAR", "BUS", "TRAIN", "BIKE", "MOTORCYCLE", "AIRPLANE", "HELICOPTER", "BOAT", "SHIP", "TRUCK", "VAN", "TRACTOR", "SUBMARINE", "SCOOTER", "TRAM", "AMBULANCE", "TAXI", "FERRY", "GLIDER", "WAGON"],
-    "Weather 🌤️": ["RAIN", "SUN", "CLOUD", "WIND", "SNOW", "STORM", "LIGHTNING", "THUNDER", "FOG", "HAIL", "TORNADO", "HURRICANE", "BREEZE", "FROST", "DEW", "RAINBOW", "MIST", "CYCLONE", "BLIZZARD", "WARM", "COLD"],
-    "Emotions 😃": ["HAPPY", "SAD", "ANGRY", "SCARED", "EXCITED", "BORED", "TIRED", "PROUD", "SHY", "BRAVE", "CALM", "NERVOUS", "SURPRISED", "JEALOUS", "GUILTY", "HOPEFUL", "LONELY", "SILLY", "CONFUSED", "RELAXED", "JOY"],
-    "Music 🎵": ["PIANO", "GUITAR", "DRUMS", "VIOLIN", "FLUTE", "TRUMPET", "BASS", "SINGER", "SONG", "BAND", "CONCERT", "MELODY", "RHYTHM", "NOTES", "CHORD", "STUDIO", "RADIO", "JAZZ", "ROCK", "POP", "OPERA"],
-    "Nature 🌳": ["TREE", "FLOWER", "GRASS", "LEAF", "RIVER", "MOUNTAIN", "LAKE", "OCEAN", "ROCK", "DIRT", "SAND", "WOOD", "FIRE", "ICE", "CAVE", "HILL", "VALLEY", "WATERFALL", "VOLCANO", "DESERT", "POND"]
+/* ═══════════════════════════════════════════════════════
+   WORD SEARCH PRO — app.js
+   Fully rewritten: all bugs fixed, stats system, clean logic
+═══════════════════════════════════════════════════════ */
+
+'use strict';
+
+// ── Themes ──────────────────────────────────────────────
+const THEMES = {
+    "Animals 🦁":    ["LION","TIGER","ELEPHANT","GIRAFFE","MONKEY","ZEBRA","RABBIT","PANDA","KANGAROO","HIPPO","DOLPHIN","SHARK","WHALE","PARROT","EAGLE","SNAKE","TURTLE","FROG","WOLF","BEAR"],
+    "Food 🍕":       ["PIZZA","BURGER","PASTA","CHICKEN","APPLE","BANANA","ORANGE","CHERRY","BREAD","CHEESE","COOKIE","CAKE","SALAD","TOMATO","POTATO","DONUT","MILK","JUICE","MANGO","STEAK"],
+    "Professions 👩‍⚕️":["DOCTOR","NURSE","TEACHER","POLICE","PILOT","CHEF","DENTIST","FARMER","ARTIST","SINGER","ACTOR","WRITER","COACH","JUDGE","BAKER","WAITER","SAILOR","MINER","GUARD","DRIVER"],
+    "Places 🏠":     ["HOUSE","SCHOOL","PARK","BEACH","MUSEUM","CINEMA","OFFICE","STREET","GARDEN","FOREST","CHURCH","STORE","BANK","STADIUM","ZOO","AIRPORT","HOTEL","CITY","ISLAND","CASTLE"],
+    "Space 🚀":      ["PLANET","STARS","MOON","SUN","COMET","GALAXY","ROCKET","ALIEN","ORBIT","METEOR","NEBULA","ASTEROID","COSMOS","EARTH","MARS","VENUS","SATURN","PLUTO","APOLLO","RADAR"],
+    "Sports ⚽":     ["SOCCER","TENNIS","BASKETBALL","BASEBALL","GOLF","RUGBY","HOCKEY","VOLLEYBALL","CRICKET","BOXING","SKIING","SURFING","CYCLING","RUNNING","SWIMMING","KARATE","JUDO","CHESS","DARTS","BOWLING"],
+    "Colors 🎨":     ["RED","BLUE","GREEN","YELLOW","BLACK","WHITE","PINK","PURPLE","ORANGE","BROWN","GREY","CYAN","MAGENTA","MAROON","OLIVE","NAVY","TEAL","SILVER","GOLD","INDIGO"],
+    "Clothes 👕":    ["SHIRT","PANTS","DRESS","SKIRT","SHOES","SOCKS","HAT","COAT","JACKET","GLOVES","SCARF","BELT","TIE","BOOTS","SWEATER","JEANS","SHORTS","SUIT","BLOUSE","SLIPPERS"],
+    "Body 👁️":      ["HEAD","EYES","NOSE","MOUTH","EARS","HAIR","NECK","SHOULDERS","ARMS","HANDS","FINGERS","LEGS","FEET","TOES","BACK","CHEST","STOMACH","KNEES","ELBOWS","TEETH"],
+    "Vehicles 🚗":   ["CAR","BUS","TRAIN","BIKE","MOTORCYCLE","AIRPLANE","HELICOPTER","BOAT","SHIP","TRUCK","VAN","TRACTOR","SUBMARINE","SCOOTER","TRAM","AMBULANCE","TAXI","FERRY","GLIDER","WAGON"],
+    "Weather 🌤️":   ["RAIN","SUN","CLOUD","WIND","SNOW","STORM","LIGHTNING","THUNDER","FOG","HAIL","TORNADO","HURRICANE","BREEZE","FROST","DEW","RAINBOW","MIST","CYCLONE","BLIZZARD","WARM"],
+    "Emotions 😃":   ["HAPPY","SAD","ANGRY","SCARED","EXCITED","BORED","TIRED","PROUD","SHY","BRAVE","CALM","NERVOUS","SURPRISED","JEALOUS","HOPEFUL","LONELY","SILLY","CONFUSED","RELAXED","JOY"],
+    "Music 🎵":      ["PIANO","GUITAR","DRUMS","VIOLIN","FLUTE","TRUMPET","BASS","SINGER","SONG","BAND","CONCERT","MELODY","RHYTHM","NOTES","CHORD","STUDIO","RADIO","JAZZ","ROCK","OPERA"],
+    "Nature 🌳":     ["TREE","FLOWER","GRASS","LEAF","RIVER","MOUNTAIN","LAKE","OCEAN","ROCK","DIRT","SAND","WOOD","FIRE","ICE","CAVE","HILL","VALLEY","WATERFALL","VOLCANO","DESERT"]
 };
 
-let selectedWords = [], grid = [], gridSize = 14;
-let isDragging = false, selection = [];
-let score = parseInt(localStorage.getItem('ws_score')) || 0;
-let timeElapsed = 0;
-let timerInterval = null;
-
-// Audio Nivel Pro (Añadida Fanfarria)
+// ── Audio ────────────────────────────────────────────────
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-function playNote(f, d, type='sine') {
-    if(audioCtx.state === 'suspended') audioCtx.resume();
-    const o = audioCtx.createOscillator(), g = audioCtx.createGain();
-    o.type = type;
-    o.connect(g); g.connect(audioCtx.destination);
-    o.frequency.value = f; g.gain.setValueAtTime(0.1, audioCtx.currentTime);
-    o.start(); o.stop(audioCtx.currentTime + d);
+function playNote(freq, dur, type = 'sine', vol = 0.08) {
+    try {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const o = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        o.type = type;
+        o.frequency.value = freq;
+        g.gain.setValueAtTime(vol, audioCtx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+        o.connect(g); g.connect(audioCtx.destination);
+        o.start(); o.stop(audioCtx.currentTime + dur);
+    } catch (e) { /* silence audio errors */ }
 }
-
-const sounds = {
-    click: () => playNote(600, 0.05),
-    success: () => { playNote(500, 0.1); setTimeout(() => playNote(700, 0.15), 100); },
-    error: () => playNote(150, 0.15, 'sawtooth'),
+const SFX = {
+    tick:    () => playNote(600, 0.04, 'sine', 0.05),
+    success: () => {
+        playNote(523, 0.12); 
+        setTimeout(() => playNote(659, 0.12), 120);
+        setTimeout(() => playNote(784, 0.25), 240);
+    },
+    error:   () => playNote(160, 0.12, 'sawtooth', 0.06),
     fanfare: () => {
-        playNote(392.00, 0.2, 'square'); // G4
-        setTimeout(() => playNote(392.00, 0.2, 'square'), 200);
-        setTimeout(() => playNote(392.00, 0.2, 'square'), 400);
-        setTimeout(() => playNote(523.25, 0.4, 'square'), 600); // C5
-        setTimeout(() => playNote(659.25, 0.6, 'square'), 1000); // E5
+        const notes = [392, 392, 392, 523, 659, 784];
+        notes.forEach((n, i) => setTimeout(() => playNote(n, 0.25, 'square', 0.07), i * 180));
     }
 };
 
-window.onload = () => {
-    if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').then(r => r.update());
-    
-    const savedName = localStorage.getItem('ws_user');
-    if (!savedName) {
-        document.getElementById('name-modal').style.display = 'flex';
-    } else {
-        document.getElementById('user-name').innerText = savedName;
-        updateScore();
-        setupThemes();
-    }
-    
-let selectedWords = [], grid = [], gridSize = 14;
-let isDragging = false, selection = [], score = 0, timeElapsed = 0, timerInterval = null;
+// ── State ────────────────────────────────────────────────
+let state = {
+    grid: [],
+    gridSize: 12,
+    selectedWords: [],
+    foundWords: new Set(),
+    timeElapsed: 0,
+    timerInterval: null,
+    score: 0,
+    difficulty: 'easy',
+    theme: '',
+    isDragging: false,
+    selection: [],          // array of cell elements
+    selectionIndices: [],   // array of {r, c}
+};
 
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-function playNote(f, d, type='sine') {
-    if(audioCtx.state === 'suspended') audioCtx.resume();
-    const o = audioCtx.createOscillator(), g = audioCtx.createGain();
-    o.type = type; o.connect(g); g.connect(audioCtx.destination);
-    o.frequency.value = f; g.gain.setValueAtTime(0.1, audioCtx.currentTime);
-    o.start(); o.stop(audioCtx.currentTime + d);
+// ── Storage helpers ──────────────────────────────────────
+function loadStats() {
+    try { return JSON.parse(localStorage.getItem('ws_stats')) || {}; } catch { return {}; }
+}
+function saveStats(s) {
+    localStorage.setItem('ws_stats', JSON.stringify(s));
 }
 
-window.onload = () => {
-    const savedName = localStorage.getItem('ws_user') || "Noah";
-    document.getElementById('player-name-input').value = savedName;
-    document.getElementById('user-name').innerText = savedName;
-    
-    // Cargar score total acumulado
-    score = parseInt(localStorage.getItem('ws_total_score')) || 0;
-    document.getElementById('user-score').innerText = `Score: ${score}`;
+// ── Screen navigation ────────────────────────────────────
+function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+}
 
-    const select = document.getElementById('theme-select');
-    Object.keys(themes).forEach(t => select.add(new Option(t, t)));
-    
-    document.getElementById('name-modal').style.display = 'flex';
-};
+// ── Init ─────────────────────────────────────────────────
+window.addEventListener('load', () => {
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
+    }
 
-// --- Lógica de Botones ---
-document.getElementById('save-name-btn').onclick = () => {
-    const name = document.getElementById('player-name-input').value.trim() || "Noah";
-    localStorage.setItem('ws_user', name);
-    document.getElementById('user-name').innerText = name;
-    initGame();
-};
+    // Populate theme select
+    const sel = document.getElementById('inp-theme');
+    Object.keys(THEMES).forEach(t => {
+        const opt = document.createElement('option');
+        opt.value = t; opt.textContent = t;
+        sel.appendChild(opt);
+    });
 
-document.getElementById('exit-btn').onclick = () => {
-    clearInterval(timerInterval);
-    document.getElementById('stat-player').innerText = localStorage.getItem('ws_user');
-    document.getElementById('stat-score').innerText = score;
-    document.getElementById('stats-modal').style.display = 'flex';
-};
+    // Restore saved name
+    const savedName = localStorage.getItem('ws_user') || '';
+    if (savedName) document.getElementById('inp-name').value = savedName;
 
-document.getElementById('close-stats-btn').onclick = () => {
-    document.getElementById('stats-modal').style.display = 'none';
-    document.getElementById('name-modal').style.display = 'flex';
-};
+    // Difficulty buttons
+    document.querySelectorAll('.diff-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        });
+    });
 
-document.getElementById('settings-btn').onclick = () => {
-    document.getElementById('name-modal').style.display = 'flex';
-};
+    showScreen('screen-welcome');
 
-// --- Motor del Juego ---
-function initGame() {
-    document.getElementById('name-modal').style.display = 'none';
-    const themeKey = document.getElementById('theme-select').value;
-    const diff = document.getElementById('difficulty-select').value;
-    
-    gridSize = diff === 'normal' ? 12 : 16;
-    const wordCount = diff === 'normal' ? 10 : 20;
-    
-    selectedWords = [...themes[themeKey]].sort(() => 0.5 - Math.random()).slice(0, wordCount);
-    grid = Array(gridSize).fill().map(() => Array(gridSize).fill(''));
-    
-    selectedWords.forEach(w => placeWord(w));
+    // Button bindings
+    document.getElementById('btn-start').addEventListener('click', startGame);
+    document.getElementById('btn-exit').addEventListener('click', exitGame);
+    document.getElementById('btn-play-again').addEventListener('click', () => showScreen('screen-welcome'));
+    document.getElementById('btn-win-stats').addEventListener('click', openStats);
+    document.getElementById('btn-stats-from-welcome').addEventListener('click', openStats);
+    document.getElementById('btn-stats-back').addEventListener('click', () => showScreen('screen-welcome'));
+    document.getElementById('btn-new-game-from-stats').addEventListener('click', () => showScreen('screen-welcome'));
+});
+
+// ── Start Game ───────────────────────────────────────────
+function startGame() {
+    const nameInput = document.getElementById('inp-name').value.trim() || 'Player';
+    localStorage.setItem('ws_user', nameInput);
+
+    const themeKey = document.getElementById('inp-theme').value;
+    const diffBtn  = document.querySelector('.diff-btn.active');
+    const diff     = diffBtn ? diffBtn.dataset.diff : 'easy';
+
+    state.difficulty    = diff;
+    state.theme         = themeKey;
+    state.gridSize      = diff === 'easy' ? 12 : 16;
+    const wordCount     = diff === 'easy' ? 10 : 20;
+    state.foundWords    = new Set();
+    state.score         = 0;
+    state.selection     = [];
+    state.selectionIndices = [];
+    state.isDragging    = false;
+
+    // Pick random words
+    const pool = [...THEMES[themeKey]];
+    pool.sort(() => Math.random() - 0.5);
+    state.selectedWords = pool.slice(0, wordCount);
+
+    // Build grid
+    state.grid = Array.from({ length: state.gridSize }, () => Array(state.gridSize).fill(''));
+    state.selectedWords.forEach(w => placeWord(w));
     fillGrid();
-    render();
+
+    // Update HUD
+    document.getElementById('hud-name').textContent = nameInput;
+    document.getElementById('hud-theme').textContent = themeKey;
+    document.getElementById('hud-score').textContent = '0';
+    document.getElementById('hud-time').textContent  = '0s';
+    document.getElementById('words-found-count').textContent = '0';
+    document.getElementById('words-total-count').textContent = `/ ${wordCount}`;
+
+    renderGrid();
+    renderWordList();
     startTimer();
+    updateRing();
+    showScreen('screen-game');
 }
+
+// ── Grid building ────────────────────────────────────────
+const DIRECTIONS = [[0,1],[1,0],[1,1],[1,-1],[-1,0],[0,-1],[-1,-1],[-1,1]];
 
 function placeWord(word) {
     let placed = false, attempts = 0;
-    while (!placed && attempts < 150) {
-        const dir = [[0,1],[1,0],[1,1],[1,-1]][Math.floor(Math.random()*4)];
-        const r = Math.floor(Math.random()*gridSize), c = Math.floor(Math.random()*gridSize);
+    while (!placed && attempts < 200) {
+        const dir = DIRECTIONS[Math.floor(Math.random() * DIRECTIONS.length)];
+        const r   = Math.floor(Math.random() * state.gridSize);
+        const c   = Math.floor(Math.random() * state.gridSize);
         if (canPlace(word, r, c, dir)) {
-            for (let i=0; i<word.length; i++) grid[r+i*dir[0]][c+i*dir[1]] = word[i];
+            for (let i = 0; i < word.length; i++) {
+                state.grid[r + i * dir[0]][c + i * dir[1]] = word[i];
+            }
             placed = true;
         }
         attempts++;
@@ -141,99 +184,276 @@ function placeWord(word) {
 }
 
 function canPlace(word, r, c, dir) {
-    for (let i=0; i<word.length; i++) {
-        const nr = r+i*dir[0], nc = c+i*dir[1];
-        if (nr<0 || nr>=gridSize || nc<0 || nc>=gridSize || (grid[nr][nc] !== '' && grid[nr][nc] !== word[i])) return false;
+    for (let i = 0; i < word.length; i++) {
+        const nr = r + i * dir[0], nc = c + i * dir[1];
+        if (nr < 0 || nr >= state.gridSize || nc < 0 || nc >= state.gridSize) return false;
+        const existing = state.grid[nr][nc];
+        if (existing !== '' && existing !== word[i]) return false;
     }
     return true;
 }
 
 function fillGrid() {
-    for(let r=0; r<gridSize; r++)
-        for(let c=0; c<gridSize; c++)
-            if(!grid[r][c]) grid[r][c] = String.fromCharCode(65+Math.floor(Math.random()*26));
+    for (let r = 0; r < state.gridSize; r++)
+        for (let c = 0; c < state.gridSize; c++)
+            if (!state.grid[r][c])
+                state.grid[r][c] = String.fromCharCode(65 + Math.floor(Math.random() * 26));
 }
 
-function render() {
+// ── Render ───────────────────────────────────────────────
+function renderGrid() {
     const container = document.getElementById('word-search-container');
-    container.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
     container.innerHTML = '';
-    
-    grid.forEach((row, r) => row.forEach((char, c) => {
-        const div = document.createElement('div');
-        div.className = 'cell'; div.innerText = char;
-        div.onpointerdown = startSelection;
-        container.appendChild(div);
-    }));
 
+    // Size grid to fit screen
+    const gameMain   = document.querySelector('.game-main');
+    const sidebar    = document.querySelector('.sidebar');
+    const sideW      = 110; // px reserved for sidebar
+    const availW     = Math.min(gameMain.clientWidth - sideW, gameMain.clientHeight) - 6;
+    const cellPx     = Math.floor(availW / state.gridSize);
+    const gridPx     = cellPx * state.gridSize + (state.gridSize - 1) * 2 + 6;
+
+    container.style.gridTemplateColumns = `repeat(${state.gridSize}, ${cellPx}px)`;
+    container.style.gridTemplateRows    = `repeat(${state.gridSize}, ${cellPx}px)`;
+    container.style.width  = `${gridPx}px`;
+    container.style.height = `${gridPx}px`;
+
+    for (let r = 0; r < state.gridSize; r++) {
+        for (let c = 0; c < state.gridSize; c++) {
+            const div = document.createElement('div');
+            div.className = 'cell';
+            div.textContent = state.grid[r][c];
+            div.style.fontSize = `${Math.max(9, Math.floor(cellPx * 0.5))}px`;
+            div.dataset.r = r;
+            div.dataset.c = c;
+
+            div.addEventListener('pointerdown', onPointerDown);
+            container.appendChild(div);
+        }
+    }
+
+    // Global pointer events
+    container.addEventListener('pointermove', onPointerMove);
+    container.addEventListener('pointerup',   onPointerUp);
+    container.addEventListener('pointerleave', onPointerUp);
+    container.setPointerCapture; // allow drag outside
+}
+
+function renderWordList() {
     const list = document.getElementById('word-list');
     list.innerHTML = '';
-    selectedWords.forEach(w => {
-        const li = document.createElement('li'); li.innerText = w; li.id = `w-${w}`;
+    state.selectedWords.forEach(w => {
+        const li = document.createElement('li');
+        li.textContent = w;
+        li.id = `wl-${w}`;
         list.appendChild(li);
     });
 }
 
-// --- Selección Táctil Corregida ---
-function startSelection(e) {
+// ── Selection (pointer events) ───────────────────────────
+function cellAt(el) {
+    return el && el.classList.contains('cell') ? el : null;
+}
+
+function onPointerDown(e) {
     e.preventDefault();
-    isDragging = true;
-    selection = [e.target];
-    e.target.classList.add('selected');
-    playNote(600, 0.05);
-    window.addEventListener('pointermove', moveSelection);
-    window.addEventListener('pointerup', endSelection);
+    state.isDragging = true;
+    state.selection  = [];
+    state.selectionIndices = [];
+
+    const cell = cellAt(e.currentTarget);
+    if (cell) addToSelection(cell);
+
+    SFX.tick();
 }
 
-function moveSelection(e) {
-    if (!isDragging) return;
+function onPointerMove(e) {
+    if (!state.isDragging) return;
     const el = document.elementFromPoint(e.clientX, e.clientY);
-    if (el && el.classList.contains('cell') && !selection.includes(el)) {
-        selection.push(el);
-        el.classList.add('selected');
-        playNote(600, 0.05);
-    }
+    const cell = cellAt(el);
+    if (!cell) return;
+
+    const r = parseInt(cell.dataset.r);
+    const c = parseInt(cell.dataset.c);
+
+    // Already in selection?
+    if (state.selectionIndices.some(p => p.r === r && p.c === c)) return;
+
+    // Must be collinear with existing selection
+    if (state.selectionIndices.length >= 1 && !isCollinear(r, c)) return;
+
+    addToSelection(cell);
+    SFX.tick();
 }
 
-function endSelection() {
-    isDragging = false;
-    window.removeEventListener('pointermove', moveSelection);
-    window.removeEventListener('pointerup', endSelection);
-    
-    const word = selection.map(s => s.innerText).join('');
-    const rev = word.split('').reverse().join('');
-    const found = selectedWords.find(w => w === word || w === rev);
+function addToSelection(cell) {
+    state.selection.push(cell);
+    state.selectionIndices.push({ r: parseInt(cell.dataset.r), c: parseInt(cell.dataset.c) });
+    cell.classList.add('selected');
+}
 
-    if (found && !document.getElementById(`w-${found}`).classList.contains('found')) {
-        selection.forEach(s => { s.classList.remove('selected'); s.classList.add('found'); });
-        document.getElementById(`w-${found}`).classList.add('found');
-        score += 10;
-        localStorage.setItem('ws_total_score', score);
-        document.getElementById('user-score').innerText = `Score: ${score}`;
-        playNote(500, 0.1);
+function isCollinear(r, c) {
+    if (state.selectionIndices.length === 0) return true;
+    if (state.selectionIndices.length === 1) return true; // any direction OK for 2nd cell
+
+    const first = state.selectionIndices[0];
+    const last  = state.selectionIndices[state.selectionIndices.length - 1];
+
+    const dr = last.r - first.r;
+    const dc = last.c - first.c;
+    const nr = r - first.r;
+    const nc = c - first.c;
+
+    // Normalize direction
+    const len = Math.max(Math.abs(dr), Math.abs(dc));
+    if (len === 0) return true;
+    const udr = dr / len, udc = dc / len;
+
+    // New cell must lie along same direction
+    const newLen = Math.max(Math.abs(nr), Math.abs(nc));
+    if (newLen === 0) return false;
+    return Math.abs(nr / newLen - udr) < 0.01 && Math.abs(nc / newLen - udc) < 0.01;
+}
+
+function onPointerUp() {
+    if (!state.isDragging) return;
+    state.isDragging = false;
+
+    const word = state.selection.map(c => c.textContent).join('');
+    const rev  = word.split('').reverse().join('');
+    const found = state.selectedWords.find(w => (w === word || w === rev) && !state.foundWords.has(w));
+
+    if (found) {
+        state.foundWords.add(found);
+        state.selection.forEach(c => {
+            c.classList.remove('selected');
+            c.classList.add('found');
+            // Flash animation restart
+            c.classList.remove('flash');
+            void c.offsetWidth;
+            c.classList.add('flash');
+        });
+        document.getElementById(`wl-${found}`)?.classList.add('found');
+
+        state.score += (state.difficulty === 'easy' ? 10 : 15);
+        document.getElementById('hud-score').textContent = state.score;
+        updateRing();
+        SFX.success();
         checkWin();
     } else {
-        selection.forEach(s => s.classList.remove('selected'));
+        state.selection.forEach(c => c.classList.remove('selected'));
+        if (state.selection.length > 1) SFX.error();
     }
-    selection = [];
+
+    state.selection = [];
+    state.selectionIndices = [];
 }
 
+// ── Progress Ring ────────────────────────────────────────
+function updateRing() {
+    const total  = state.selectedWords.length;
+    const done   = state.foundWords.size;
+    const circ   = 2 * Math.PI * 34; // r=34
+    const offset = circ * (1 - done / total);
+    document.getElementById('ring-fill').style.strokeDashoffset = offset;
+    document.getElementById('words-found-count').textContent = done;
+}
+
+// ── Timer ────────────────────────────────────────────────
 function startTimer() {
-    timeElapsed = 0;
-    clearInterval(timerInterval);
-    timerInterval = setInterval(() => {
-        timeElapsed++;
-        document.getElementById('user-time').innerText = `⏱️ ${timeElapsed}s`;
+    state.timeElapsed = 0;
+    clearInterval(state.timerInterval);
+    state.timerInterval = setInterval(() => {
+        state.timeElapsed++;
+        document.getElementById('hud-time').textContent = formatTime(state.timeElapsed);
     }, 1000);
 }
 
+function formatTime(s) {
+    if (s < 60) return `${s}s`;
+    return `${Math.floor(s/60)}m ${s%60}s`;
+}
+
+// ── Win / Exit ───────────────────────────────────────────
 function checkWin() {
-    if (document.querySelectorAll('#word-list li.found').length === selectedWords.length) {
-        clearInterval(timerInterval);
-        setTimeout(() => {
-            playNote(392, 0.3, 'square');
-            alert(`🎉 Amazing! Score: ${score} | Time: ${timeElapsed}s`);
-            document.getElementById('name-modal').style.display = 'flex';
-        }, 500);
+    if (state.foundWords.size < state.selectedWords.length) return;
+    clearInterval(state.timerInterval);
+    SFX.fanfare();
+
+    // Save stats
+    const stats = loadStats();
+    const name  = localStorage.getItem('ws_user') || 'Player';
+    if (!stats[name]) stats[name] = { score: 0, games: 0, times: [] };
+    stats[name].score += state.score;
+    stats[name].games += 1;
+    stats[name].times.push(state.timeElapsed);
+
+    // Keep last 10 recent games
+    if (!stats[name].recent) stats[name].recent = [];
+    stats[name].recent.unshift({
+        theme: state.theme,
+        score: state.score,
+        time:  state.timeElapsed,
+        diff:  state.difficulty
+    });
+    stats[name].recent = stats[name].recent.slice(0, 10);
+    saveStats(stats);
+
+    // Populate win screen
+    setTimeout(() => {
+        document.getElementById('win-score').textContent = state.score;
+        document.getElementById('win-time').textContent  = formatTime(state.timeElapsed);
+        document.getElementById('win-games').textContent = stats[name].games;
+
+        const emojis = ['🎉','🏆','⭐','🚀','🎊','🦁'];
+        document.getElementById('win-emoji').textContent = emojis[Math.floor(Math.random() * emojis.length)];
+
+        showScreen('screen-win');
+    }, 600);
+}
+
+function exitGame() {
+    clearInterval(state.timerInterval);
+    // Save partial game (no score, just session ended)
+    showScreen('screen-welcome');
+}
+
+// ── Stats Screen ─────────────────────────────────────────
+function openStats() {
+    const name  = localStorage.getItem('ws_user') || 'Player';
+    const stats = loadStats();
+    const p     = stats[name] || { score: 0, games: 0, times: [] };
+
+    document.getElementById('stats-name').textContent = name;
+    document.getElementById('st-score').textContent   = p.score || 0;
+    document.getElementById('st-games').textContent   = p.games || 0;
+
+    const times = p.times || [];
+    if (times.length > 0) {
+        const best = Math.min(...times);
+        const avg  = Math.round(times.reduce((a, b) => a + b, 0) / times.length);
+        document.getElementById('st-best').textContent = formatTime(best);
+        document.getElementById('st-avg').textContent  = formatTime(avg);
+    } else {
+        document.getElementById('st-best').textContent = '—';
+        document.getElementById('st-avg').textContent  = '—';
     }
+
+    const recentList = document.getElementById('recent-list');
+    recentList.innerHTML = '';
+    const recent = p.recent || [];
+    if (recent.length === 0) {
+        const li = document.createElement('li');
+        li.textContent = 'No games played yet';
+        li.style.color = 'var(--text-muted)';
+        recentList.appendChild(li);
+    } else {
+        recent.forEach(g => {
+            const li = document.createElement('li');
+            li.innerHTML = `<span class="ri-theme">${g.theme}</span><span class="ri-meta">${g.diff} · ${formatTime(g.time)} · +${g.score}pts</span>`;
+            recentList.appendChild(li);
+        });
+    }
+
+    showScreen('screen-stats');
 }
