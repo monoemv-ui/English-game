@@ -25,30 +25,82 @@ const THEMES = {
 
 // ── Audio ────────────────────────────────────────────────
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-function playNote(freq, dur, type = 'sine', vol = 0.08) {
+
+function playTone(freq, dur, type = 'sine', vol = 0.12, attack = 0.01, decay = 0.1) {
     try {
         if (audioCtx.state === 'suspended') audioCtx.resume();
         const o = audioCtx.createOscillator();
         const g = audioCtx.createGain();
         o.type = type;
         o.frequency.value = freq;
-        g.gain.setValueAtTime(vol, audioCtx.currentTime);
+        g.gain.setValueAtTime(0, audioCtx.currentTime);
+        g.gain.linearRampToValueAtTime(vol, audioCtx.currentTime + attack);
+        g.gain.setValueAtTime(vol, audioCtx.currentTime + attack);
         g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
         o.connect(g); g.connect(audioCtx.destination);
-        o.start(); o.stop(audioCtx.currentTime + dur);
+        o.start(); o.stop(audioCtx.currentTime + dur + 0.05);
     } catch (e) { /* silence audio errors */ }
 }
+
+function playChord(freqs, dur, vol = 0.07) {
+    freqs.forEach(f => playTone(f, dur, 'sine', vol));
+}
+
+function playBounce(freq, dur) {
+    try {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const o = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        o.type = 'sine';
+        o.frequency.setValueAtTime(freq * 1.5, audioCtx.currentTime);
+        o.frequency.exponentialRampToValueAtTime(freq, audioCtx.currentTime + dur * 0.4);
+        g.gain.setValueAtTime(0.13, audioCtx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+        o.connect(g); g.connect(audioCtx.destination);
+        o.start(); o.stop(audioCtx.currentTime + dur + 0.05);
+    } catch(e) {}
+}
+
 const SFX = {
-    tick:    () => playNote(600, 0.04, 'sine', 0.05),
-    success: () => {
-        playNote(523, 0.12); 
-        setTimeout(() => playNote(659, 0.12), 120);
-        setTimeout(() => playNote(784, 0.25), 240);
+    // Playful "boing" tick when dragging
+    tick: () => {
+        playBounce(800, 0.06);
     },
-    error:   () => playNote(160, 0.12, 'sawtooth', 0.06),
+
+    // Happy ascending arpeggio when word found
+    success: () => {
+        const melody = [523, 659, 784, 1047]; // C5 E5 G5 C6
+        melody.forEach((n, i) => {
+            setTimeout(() => {
+                playBounce(n, 0.18);
+            }, i * 90);
+        });
+        // Sparkle harmony on top
+        setTimeout(() => playChord([784, 988, 1175], 0.35, 0.04), 300);
+    },
+
+    // Gentle "whoops" descending — not scary for kids
+    error: () => {
+        playTone(440, 0.08, 'sine', 0.09);
+        setTimeout(() => playTone(330, 0.12, 'sine', 0.07), 80);
+    },
+
+    // Big joyful fanfare — bubbly and triumphant
     fanfare: () => {
-        const notes = [392, 392, 392, 523, 659, 784];
-        notes.forEach((n, i) => setTimeout(() => playNote(n, 0.25, 'square', 0.07), i * 180));
+        const melody = [523, 659, 784, 659, 784, 1047, 988, 1047];
+        const delays = [0, 120, 240, 360, 440, 560, 680, 780];
+        melody.forEach((n, i) => {
+            setTimeout(() => playBounce(n, 0.22), delays[i]);
+        });
+        // Final chord burst
+        setTimeout(() => {
+            playChord([523, 659, 784, 1047], 0.6, 0.06);
+        }, 900);
+        // Sparkle tinkle
+        const sparkle = [1568, 1760, 2093, 1760, 2093];
+        sparkle.forEach((n, i) => {
+            setTimeout(() => playTone(n, 0.1, 'sine', 0.03), 900 + i * 80);
+        });
     }
 };
 
@@ -210,10 +262,14 @@ function renderGrid() {
     container.innerHTML = '';
 
     const gameMain = document.querySelector('.game-main');
-    const sideW    = 110;
-    const availW   = Math.min(gameMain.clientWidth - sideW, gameMain.clientHeight) - 6;
-    const cellPx   = Math.floor(availW / state.gridSize);
-    const gridPx   = cellPx * state.gridSize + (state.gridSize - 1) * 2 + 6;
+    // Bottom bar takes ~90px; leave room for it
+    const bottomBarH = 90;
+    const availW = gameMain.clientWidth - 6;
+    const availH = gameMain.clientHeight - bottomBarH - 6;
+    const maxByW = Math.floor(availW / state.gridSize);
+    const maxByH = Math.floor(availH / state.gridSize);
+    const cellPx = Math.min(maxByW, maxByH);
+    const gridPx = cellPx * state.gridSize + (state.gridSize - 1) * 2 + 6;
 
     state.cellPx = cellPx + 2; // cell size + gap
 
