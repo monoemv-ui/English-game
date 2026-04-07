@@ -180,9 +180,10 @@ body {
 .btn-exit:hover { background: var(--red-dk); }
 
 .game-main {
-    flex: 1; display: flex; gap: 0;
+    flex: 1; display: flex; flex-direction: column; gap: 0;
     overflow: hidden;
     min-height: 0;
+    align-items: center;
 }
 
 /* Grid */
@@ -193,7 +194,7 @@ body {
     padding: 3px;
     touch-action: none; user-select: none;
     flex-shrink: 0;
-    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
     /* Size computed by JS */
 }
 
@@ -227,21 +228,24 @@ body {
     100% { background: var(--green); transform: scale(1); }
 }
 
-/* Sidebar */
+/* Bottom bar — progress ring + word list horizontal */
 .sidebar {
     flex: 1;
-    display: flex; flex-direction: column;
+    display: flex;
+    flex-direction: row;
     align-items: center;
-    padding: 12px 8px;
-    overflow-y: auto;
-    min-width: 0;
-    gap: 10px;
+    padding: 8px 12px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    min-height: 0;
+    gap: 12px;
+    width: 100%;
 }
 
 .progress-ring-wrap {
-    position: relative; width: 80px; height: 80px; flex-shrink: 0;
+    position: relative; width: 64px; height: 64px; flex-shrink: 0;
 }
-.progress-ring { width: 80px; height: 80px; transform: rotate(-90deg); }
+.progress-ring { width: 64px; height: 64px; transform: rotate(-90deg); }
 .ring-bg { fill: none; stroke: var(--bg3); stroke-width: 8; }
 .ring-fill {
     fill: none; stroke: var(--green); stroke-width: 8;
@@ -255,19 +259,25 @@ body {
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
 }
-.ring-label span { font-family: var(--font-head); font-size: 1.3rem; color: var(--green); line-height: 1; }
-.ring-label small { font-size: 0.65rem; color: var(--text-muted); font-weight: 700; }
+.ring-label span { font-family: var(--font-head); font-size: 1.1rem; color: var(--green); line-height: 1; }
+.ring-label small { font-size: 0.6rem; color: var(--text-muted); font-weight: 700; }
 
 #word-list {
-    list-style: none; width: 100%;
-    display: flex; flex-direction: column; gap: 4px;
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 5px;
+    align-content: flex-start;
+    flex: 1;
 }
 #word-list li {
     background: var(--bg3); border-radius: 8px;
-    padding: 6px 10px;
-    font-size: 0.75rem; font-weight: 800; letter-spacing: 0.5px;
+    padding: 5px 10px;
+    font-size: 0.72rem; font-weight: 800; letter-spacing: 0.5px;
     text-align: center; transition: all 0.3s;
     border: 1px solid transparent;
+    white-space: nowrap;
 }
 #word-list li.found {
     text-decoration: line-through; opacity: 0.4;
