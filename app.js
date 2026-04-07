@@ -261,14 +261,20 @@ function renderGrid() {
     const container = document.getElementById('word-search-container');
     container.innerHTML = '';
 
-    const gameMain = document.querySelector('.game-main');
-    // Bottom bar takes ~90px; leave room for it
-    const bottomBarH = 90;
-    const availW = gameMain.clientWidth - 6;
-    const availH = gameMain.clientHeight - bottomBarH - 6;
+    // Measure available space directly from window minus fixed elements
+    const screenW    = window.innerWidth;
+    const screenH    = window.innerHeight;
+    const headerEl   = document.querySelector('.game-header');
+    const headerH    = headerEl ? headerEl.offsetHeight : 50;
+    const bottomBarH = 92;  // sidebar / word-list bar height
+    const padding    = 8;
+
+    const availW = screenW - padding;
+    const availH = screenH - headerH - bottomBarH - padding;
+
     const maxByW = Math.floor(availW / state.gridSize);
     const maxByH = Math.floor(availH / state.gridSize);
-    const cellPx = Math.min(maxByW, maxByH);
+    const cellPx = Math.max(1, Math.min(maxByW, maxByH));
     const gridPx = cellPx * state.gridSize + (state.gridSize - 1) * 2 + 6;
 
     state.cellPx = cellPx + 2; // cell size + gap
