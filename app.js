@@ -261,12 +261,18 @@ function renderGrid() {
     const container = document.getElementById('word-search-container');
     container.innerHTML = '';
 
+    // Bottom bar: 1 row for easy (~72px), 2 rows for hard (~118px)
+    const bottomBarH = state.difficulty === 'hard' ? 118 : 72;
+
+    // Apply height dynamically to sidebar
+    const sidebar = document.querySelector('.sidebar');
+    if (sidebar) sidebar.style.height = bottomBarH + 'px';
+
     // Measure available space directly from window minus fixed elements
     const screenW    = window.innerWidth;
     const screenH    = window.innerHeight;
     const headerEl   = document.querySelector('.game-header');
     const headerH    = headerEl ? headerEl.offsetHeight : 50;
-    const bottomBarH = 92;  // sidebar / word-list bar height
     const padding    = 8;
 
     const availW = screenW - padding;
