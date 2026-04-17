@@ -184,6 +184,8 @@ body {
     overflow: hidden;
     min-height: 0;
     align-items: center;
+    justify-content: center;
+    padding: 8px 20px 0;   /* side padding keeps grid off screen edges */
 }
 
 /* Grid */
@@ -191,10 +193,11 @@ body {
     display: grid;
     gap: 2px;
     background: var(--bg3);
-    padding: 3px;
+    padding: 6px;           /* inner padding so border cells have breathing room */
     touch-action: none; user-select: none;
     flex-shrink: 0;
-    border-bottom: 1px solid var(--border);
+    border-radius: 10px;
+    border: 1px solid var(--border);
     /* Size computed by JS */
 }
 
