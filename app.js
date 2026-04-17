@@ -268,20 +268,20 @@ function renderGrid() {
     const sidebar = document.querySelector('.sidebar');
     if (sidebar) sidebar.style.height = bottomBarH + 'px';
 
-    // Measure available space directly from window minus fixed elements
-    const screenW    = window.innerWidth;
-    const screenH    = window.innerHeight;
-    const headerEl   = document.querySelector('.game-header');
-    const headerH    = headerEl ? headerEl.offsetHeight : 50;
-    const padding    = 8;
+    // Leave edge padding so border cells are always reachable
+    const screenW  = window.innerWidth;
+    const screenH  = window.innerHeight;
+    const headerEl = document.querySelector('.game-header');
+    const headerH  = headerEl ? headerEl.offsetHeight : 50;
+    const edgePad  = 20; // px on each side — keeps grid off the screen edge
 
-    const availW = screenW - padding;
-    const availH = screenH - headerH - bottomBarH - padding;
+    const availW = screenW - edgePad * 2;
+    const availH = screenH - headerH - bottomBarH - edgePad;
 
     const maxByW = Math.floor(availW / state.gridSize);
     const maxByH = Math.floor(availH / state.gridSize);
     const cellPx = Math.max(1, Math.min(maxByW, maxByH));
-    const gridPx = cellPx * state.gridSize + (state.gridSize - 1) * 2 + 6;
+    const gridPx = cellPx * state.gridSize + (state.gridSize - 1) * 2 + 12; // 6px padding each side
 
     state.cellPx = cellPx + 2; // cell size + gap
 
@@ -331,8 +331,8 @@ function renderWordList() {
 function getCellFromPoint(x, y) {
     const container = document.getElementById('word-search-container');
     const rect = container.getBoundingClientRect();
-    const lx = x - rect.left - 3; // 3px = container padding
-    const ly = y - rect.top  - 3;
+    const lx = x - rect.left - 6; // 6px = container padding
+    const ly = y - rect.top  - 6;
     const r = Math.floor(ly / state.cellPx);
     const c = Math.floor(lx / state.cellPx);
     if (r < 0 || r >= state.gridSize || c < 0 || c >= state.gridSize) return null;
